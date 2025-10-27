@@ -1,82 +1,540 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SiputTool — Alat Kreator TikTok (Hijau-Putih)</title>
-  <!-- Tailwind via CDN (for convenience) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <meta name="theme-color" content="#10B981">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Play TikTok dengan IP Rotation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #010101, #2d2d2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-bottom: 1px solid #444;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #69c9d0, #ee1d52);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .video-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .video-container {
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+        
+        .video-placeholder {
+            width: 100%;
+            height: 600px;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .video-player {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-info {
+            padding: 15px;
+            background: #1a1a1a;
+        }
+        
+        .video-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .video-stats {
+            display: flex;
+            gap: 15px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .controls-section {
+            flex: 1;
+            min-width: 300px;
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .control-group {
+            margin-bottom: 25px;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #69c9d0;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ddd;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background: #2d2d2d;
+            color: #fff;
+            font-size: 1rem;
+        }
+        
+        button {
+            background: linear-gradient(90deg, #69c9d0, #ee1d52);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(238, 29, 82, 0.4);
+        }
+        
+        .ip-display {
+            background: #2d2d2d;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #69c9d0;
+        }
+        
+        .ip-address {
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: #69c9d0;
+            margin: 10px 0;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        
+        .status.connected {
+            background: rgba(105, 201, 208, 0.2);
+            color: #69c9d0;
+        }
+        
+        .status.rotating {
+            background: rgba(238, 29, 82, 0.2);
+            color: #ee1d52;
+        }
+        
+        .video-list {
+            margin-top: 20px;
+        }
+        
+        .video-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #2d2d2d;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .video-item:hover {
+            background: #3d3d3d;
+        }
+        
+        .video-thumb {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background: #444;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .video-desc {
+            flex: 1;
+        }
+        
+        .video-item-title {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .video-item-author {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .video-placeholder {
+                height: 400px;
+            }
+        }
+    </style>
 </head>
-<body class="bg-white text-slate-800 antialiased">
-  <div class="min-h-screen flex flex-col">
-    <header class="bg-gradient-to-r from-emerald-400 to-emerald-300 text-white p-6 shadow">
-      <div class="max-w-4xl mx-auto flex items-center gap-4">
-        <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center font-bold">ST</div>
-        <div>
-          <h1 class="text-2xl font-semibold">SiputTool</h1>
-          <p class="text-sm opacity-90">Alat bantu kreator TikTok — etis, simpel, dan siap deploy</p>
+<body>
+    <div class="container">
+        <header>
+            <h1>Auto Play TikTok dengan IP Rotation</h1>
+            <p class="subtitle">Putar video TikTok secara otomatis dengan rotasi alamat IP</p>
+        </header>
+        
+        <div class="main-content">
+            <section class="video-section">
+                <div class="video-container">
+                    <div class="video-placeholder">
+                        <video class="video-player" controls autoplay muted>
+                            <source src="" type="video/mp4">
+                            Browser Anda tidak mendukung pemutaran video.
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title" id="video-title">Pilih video untuk memulai</h3>
+                        <div class="video-stats">
+                            <span id="video-likes">0 suka</span>
+                            <span id="video-comments">0 komentar</span>
+                            <span id="video-shares">0 bagikan</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="video-list">
+                    <h2>Video Tersedia</h2>
+                    <div class="video-item" data-video="video1">
+                        <div class="video-thumb" style="background: linear-gradient(135deg, #ff6b6b, #ffa8a8);"></div>
+                        <div class="video-desc">
+                            <div class="video-item-title">Tutorial Dance Terbaru 2023</div>
+                            <div class="video-item-author">@dancemaster</div>
+                        </div>
+                    </div>
+                    <div class="video-item" data-video="video2">
+                        <div class="video-thumb" style="background: linear-gradient(135deg, #69c9d0, #a5dee5);"></div>
+                        <div class="video-desc">
+                            <div class="video-item-title">Life Hacks yang Berguna</div>
+                            <div class="video-item-author">@lifehacker</div>
+                        </div>
+                    </div>
+                    <div class="video-item" data-video="video3">
+                        <div class="video-thumb" style="background: linear-gradient(135deg, #ee1d52, #ff7ba0);"></div>
+                        <div class="video-desc">
+                            <div class="video-item-title">Komedi Singkat Lucu</div>
+                            <div class="video-item-author">@komedian_id</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="controls-section">
+                <div class="control-group">
+                    <h2>Pengaturan Auto Play</h2>
+                    <div class="input-group">
+                        <label for="interval">Interval Putar (detik)</label>
+                        <input type="number" id="interval" value="30" min="10">
+                    </div>
+                    <div class="input-group">
+                        <label for="video-count">Jumlah Video</label>
+                        <input type="number" id="video-count" value="10" min="1" max="50">
+                    </div>
+                    <button id="toggle-autoplay">Mulai Auto Play</button>
+                </div>
+                
+                <div class="control-group">
+                    <h2>Rotasi IP</h2>
+                    <div class="input-group">
+                        <label for="rotation-interval">Interval Rotasi (detik)</label>
+                        <input type="number" id="rotation-interval" value="60" min="30">
+                    </div>
+                    <div class="input-group">
+                        <label for="proxy-type">Tipe Proxy</label>
+                        <select id="proxy-type">
+                            <option value="residential">Residential</option>
+                            <option value="datacenter">Datacenter</option>
+                            <option value="mobile">Mobile</option>
+                        </select>
+                    </div>
+                    <button id="toggle-rotation">Mulai Rotasi IP</button>
+                    
+                    <div class="ip-display">
+                        <h3>IP Saat Ini</h3>
+                        <div class="ip-address" id="current-ip">192.168.1.1</div>
+                        <div>Lokasi: <span id="ip-location">Indonesia</span></div>
+                        <div>Provider: <span id="ip-provider">Telkom Indonesia</span></div>
+                    </div>
+                    
+                    <div class="status" id="rotation-status">Siap</div>
+                </div>
+                
+                <div class="control-group">
+                    <h2>Statistik</h2>
+                    <div class="input-group">
+                        <label>Video Diputar: <span id="played-count">0</span></label>
+                    </div>
+                    <div class="input-group">
+                        <label>IP Digunakan: <span id="ip-count">1</span></label>
+                    </div>
+                    <div class="input-group">
+                        <label>Waktu Berjalan: <span id="running-time">00:00:00</span></label>
+                    </div>
+                </div>
+            </section>
         </div>
-      </div>
-    </header>
+    </div>
 
-    <main class="flex-1 max-w-4xl mx-auto w-full p-6">
-      <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-emerald-50 p-4 rounded-2xl shadow-sm">
-          <h2 class="font-semibold text-emerald-800">Preview Video TikTok (Demo)</h2>
-          <p class="text-sm text-slate-600">Tempel URL publik TikTok. (Ini hanya preview iframe; beberapa URL mungkin diblokir oleh TikTok.)</p>
-          <input id="videoUrl" class="w-full p-2 mt-3 border rounded" placeholder="https://www.tiktok.com/@user/video/..." />
-          <div id="preview" class="mt-3">
-            <div class="text-slate-400 text-sm">Preview akan tampil di sini jika URL dimasukkan.</div>
-          </div>
-        </div>
+    <script>
+        // Data video TikTok (simulasi)
+        const videos = {
+            video1: {
+                title: "Tutorial Dance Terbaru 2023",
+                likes: "245K",
+                comments: "3.2K",
+                shares: "12K",
+                color: "linear-gradient(135deg, #ff6b6b, #ffa8a8)"
+            },
+            video2: {
+                title: "Life Hacks yang Berguna",
+                likes: "189K",
+                comments: "2.1K",
+                shares: "8.5K",
+                color: "linear-gradient(135deg, #69c9d0, #a5dee5)"
+            },
+            video3: {
+                title: "Komidi Singkat Lucu",
+                likes: "512K",
+                comments: "8.7K",
+                shares: "25K",
+                color: "linear-gradient(135deg, #ee1d52, #ff7ba0)"
+            }
+        };
 
-        <div class="bg-white p-4 rounded-2xl shadow-sm border">
-          <h2 class="font-semibold text-emerald-800">Generator Hashtag & Caption</h2>
-          <p class="text-sm text-slate-600">Masukkan keyword, lalu tekan Generate.</p>
-          <input id="keyword" class="w-full p-2 mt-3 border rounded" placeholder="Contoh: mie ayam" />
-          <div class="flex gap-2 mt-3">
-            <button id="genBtn" class="px-3 py-1 bg-emerald-600 text-white rounded">Generate</button>
-            <button id="copyCap" class="px-3 py-1 border rounded">Salin caption</button>
-          </div>
-          <div id="tags" class="mt-3 flex flex-wrap gap-2"></div>
+        // Data IP untuk rotasi (simulasi)
+        const ipAddresses = [
+            { ip: "103.21.244.12", location: "Jakarta, Indonesia", provider: "Telkom Indonesia" },
+            { ip: "45.64.123.89", location: "Surabaya, Indonesia", provider: "Indosat" },
+            { ip: "112.78.145.67", location: "Bandung, Indonesia", provider: "XL Axiata" },
+            { ip: "180.214.233.21", location: "Medan, Indonesia", provider: "Tri Indonesia" },
+            { ip: "125.160.102.34", location: "Semarang, Indonesia", provider: "Smartfren" },
+            { ip: "202.80.218.78", location: "Bali, Indonesia", provider: "Biznet" }
+        ];
 
-          <hr class="my-3" />
-          <h3 class="text-sm font-medium">Tips Singkat</h3>
-          <ul class="text-sm mt-2 list-disc list-inside text-slate-600">
-            <li>Hook 2 detik pertama sangat krusial.</li>
-            <li>Gabungkan audio trending + ide unik.</li>
-            <li>Balas komentar di jam pertama untuk reach.</li>
-          </ul>
-        </div>
-      </section>
+        // Elemen DOM
+        const videoPlayer = document.querySelector('.video-player');
+        const videoTitle = document.getElementById('video-title');
+        const videoLikes = document.getElementById('video-likes');
+        const videoComments = document.getElementById('video-comments');
+        const videoShares = document.getElementById('video-shares');
+        const currentIp = document.getElementById('current-ip');
+        const ipLocation = document.getElementById('ip-location');
+        const ipProvider = document.getElementById('ip-provider');
+        const rotationStatus = document.getElementById('rotation-status');
+        const toggleAutoplayBtn = document.getElementById('toggle-autoplay');
+        const toggleRotationBtn = document.getElementById('toggle-rotation');
+        const playedCount = document.getElementById('played-count');
+        const ipCount = document.getElementById('ip-count');
+        const runningTime = document.getElementById('running-time');
+        
+        // Variabel state
+        let isAutoPlaying = false;
+        let isRotating = false;
+        let autoPlayInterval;
+        let rotationInterval;
+        let currentVideoIndex = 0;
+        let currentIpIndex = 0;
+        let playedVideos = 0;
+        let usedIps = 1;
+        let startTime = new Date();
+        let timerInterval;
 
-      <section class="mt-6 bg-white p-4 rounded-2xl shadow-sm border">
-        <h2 class="font-semibold text-emerald-800">Kalender Konten (Simpan Lokal)</h2>
-        <p class="text-sm text-slate-600">Tambahkan jadwal, disimpan di browser kamu (localStorage).</p>
-        <div class="flex flex-col md:flex-row gap-3 mt-3">
-          <input id="title" class="p-2 border rounded flex-1" placeholder="Judul konten" />
-          <input id="date" type="date" class="p-2 border rounded" />
-          <button id="addBtn" class="px-4 py-2 rounded bg-emerald-600 text-white">Tambah</button>
-        </div>
-        <div id="calendar" class="mt-4 space-y-2"></div>
-      </section>
+        // Event listener untuk item video
+        document.querySelectorAll('.video-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const videoId = this.getAttribute('data-video');
+                playVideo(videoId);
+            });
+        });
 
-      <section class="mt-6 text-sm text-slate-600">
-        <h3 class="font-medium">Catatan penting</h3>
-        <ul class="list-disc list-inside">
-          <li>SiputTool adalah alat bantu <strong>legal</strong> dan <strong>etis</strong>. Tidak ada fitur auto-viewer atau manipulasi metrik.</li>
-          <li>Untuk publikasi otomatis atau analitik resmi, gunakan TikTok for Developers (OAuth & API resmi).</li>
-        </ul>
-      </section>
-    </main>
+        // Fungsi untuk memutar video
+        function playVideo(videoId) {
+            const video = videos[videoId];
+            if (video) {
+                videoTitle.textContent = video.title;
+                videoLikes.textContent = video.likes + " suka";
+                videoComments.textContent = video.comments + " komentar";
+                videoShares.textContent = video.shares + " bagikan";
+                
+                // Simulasi perubahan warna untuk video yang berbeda
+                document.querySelector('.video-placeholder').style.background = video.color;
+                
+                // Di aplikasi nyata, di sini akan ada kode untuk memuat video TikTok
+                // Untuk demo, kita hanya akan menampilkan placeholder
+                videoPlayer.src = "";
+                
+                // Update statistik
+                playedVideos++;
+                playedCount.textContent = playedVideos;
+            }
+        }
 
-    <footer class="py-4 text-center text-sm text-slate-600">
-      © SiputTool — Dibuat untuk kreator. Buat laporan bug atau minta fitur ke repo GitHub.
-    </footer>
-  </div>
+        // Fungsi untuk memutar video berikutnya
+        function playNextVideo() {
+            const videoIds = Object.keys(videos);
+            currentVideoIndex = (currentVideoIndex + 1) % videoIds.length;
+            playVideo(videoIds[currentVideoIndex]);
+        }
 
-  <script src="app.js"></script>
+        // Fungsi untuk merotasi IP
+        function rotateIP() {
+            currentIpIndex = (currentIpIndex + 1) % ipAddresses.length;
+            const ipData = ipAddresses[currentIpIndex];
+            
+            currentIp.textContent = ipData.ip;
+            ipLocation.textContent = ipData.location;
+            ipProvider.textContent = ipData.provider;
+            
+            // Update statistik
+            usedIps++;
+            ipCount.textContent = usedIps;
+            
+            // Tampilkan status rotasi
+            rotationStatus.textContent = "IP Dirotasi";
+            rotationStatus.className = "status rotating";
+            
+            // Kembalikan status setelah 2 detik
+            setTimeout(() => {
+                rotationStatus.textContent = "Terhubung";
+                rotationStatus.className = "status connected";
+            }, 2000);
+        }
+
+        // Fungsi untuk memperbarui waktu berjalan
+        function updateRunningTime() {
+            const now = new Date();
+            const diff = now - startTime;
+            
+            const hours = Math.floor(diff / 3600000);
+            const minutes = Math.floor((diff % 3600000) / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+            
+            runningTime.textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Event listener untuk tombol auto play
+        toggleAutoplayBtn.addEventListener('click', function() {
+            if (!isAutoPlaying) {
+                // Mulai auto play
+                const interval = parseInt(document.getElementById('interval').value) * 1000;
+                autoPlayInterval = setInterval(playNextVideo, interval);
+                toggleAutoplayBtn.textContent = "Hentikan Auto Play";
+                isAutoPlaying = true;
+                
+                // Mulai timer jika belum berjalan
+                if (!timerInterval) {
+                    timerInterval = setInterval(updateRunningTime, 1000);
+                }
+                
+                // Putar video pertama jika belum ada yang diputar
+                if (playedVideos === 0) {
+                    playNextVideo();
+                }
+            } else {
+                // Hentikan auto play
+                clearInterval(autoPlayInterval);
+                toggleAutoplayBtn.textContent = "Mulai Auto Play";
+                isAutoPlaying = false;
+            }
+        });
+
+        // Event listener untuk tombol rotasi IP
+        toggleRotationBtn.addEventListener('click', function() {
+            if (!isRotating) {
+                // Mulai rotasi IP
+                const interval = parseInt(document.getElementById('rotation-interval').value) * 1000;
+                rotationInterval = setInterval(rotateIP, interval);
+                toggleRotationBtn.textContent = "Hentikan Rotasi IP";
+                isRotating = true;
+                
+                // Rotasi IP pertama kali
+                rotateIP();
+            } else {
+                // Hentikan rotasi IP
+                clearInterval(rotationInterval);
+                toggleRotationBtn.textContent = "Mulai Rotasi IP";
+                isRotating = false;
+            }
+        });
+
+        // Inisialisasi
+        playVideo('video1');
+        updateRunningTime();
+    </script>
 </body>
-</html>
+  </html>
