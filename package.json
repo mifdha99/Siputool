@@ -1,9 +1,0 @@
-{
-  "name": "siputtool",
-  "version": "1.0.0",
-  "scripts": {
-    "build": "echo 'Build sukses' && exit 0",
-    "start": "echo 'Running SiputTool...'"
-  }{,
-  "dependencies": {}
-}
