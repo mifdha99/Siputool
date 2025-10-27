@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SiputTool — Alat Kreator TikTok (Hijau-Putih)</title>
+  <!-- Tailwind via CDN (for convenience) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="theme-color" content="#10B981">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body class="bg-white text-slate-800 antialiased">
+  <div class="min-h-screen flex flex-col">
+    <header class="bg-gradient-to-r from-emerald-400 to-emerald-300 text-white p-6 shadow">
+      <div class="max-w-4xl mx-auto flex items-center gap-4">
+        <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center font-bold">ST</div>
+        <div>
+          <h1 class="text-2xl font-semibold">SiputTool</h1>
+          <p class="text-sm opacity-90">Alat bantu kreator TikTok — etis, simpel, dan siap deploy</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-4xl mx-auto w-full p-6">
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-emerald-50 p-4 rounded-2xl shadow-sm">
+          <h2 class="font-semibold text-emerald-800">Preview Video TikTok (Demo)</h2>
+          <p class="text-sm text-slate-600">Tempel URL publik TikTok. (Ini hanya preview iframe; beberapa URL mungkin diblokir oleh TikTok.)</p>
+          <input id="videoUrl" class="w-full p-2 mt-3 border rounded" placeholder="https://www.tiktok.com/@user/video/..." />
+          <div id="preview" class="mt-3">
+            <div class="text-slate-400 text-sm">Preview akan tampil di sini jika URL dimasukkan.</div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl shadow-sm border">
+          <h2 class="font-semibold text-emerald-800">Generator Hashtag & Caption</h2>
+          <p class="text-sm text-slate-600">Masukkan keyword, lalu tekan Generate.</p>
+          <input id="keyword" class="w-full p-2 mt-3 border rounded" placeholder="Contoh: mie ayam" />
+          <div class="flex gap-2 mt-3">
+            <button id="genBtn" class="px-3 py-1 bg-emerald-600 text-white rounded">Generate</button>
+            <button id="copyCap" class="px-3 py-1 border rounded">Salin caption</button>
+          </div>
+          <div id="tags" class="mt-3 flex flex-wrap gap-2"></div>
+
+          <hr class="my-3" />
+          <h3 class="text-sm font-medium">Tips Singkat</h3>
+          <ul class="text-sm mt-2 list-disc list-inside text-slate-600">
+            <li>Hook 2 detik pertama sangat krusial.</li>
+            <li>Gabungkan audio trending + ide unik.</li>
+            <li>Balas komentar di jam pertama untuk reach.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="mt-6 bg-white p-4 rounded-2xl shadow-sm border">
+        <h2 class="font-semibold text-emerald-800">Kalender Konten (Simpan Lokal)</h2>
+        <p class="text-sm text-slate-600">Tambahkan jadwal, disimpan di browser kamu (localStorage).</p>
+        <div class="flex flex-col md:flex-row gap-3 mt-3">
+          <input id="title" class="p-2 border rounded flex-1" placeholder="Judul konten" />
+          <input id="date" type="date" class="p-2 border rounded" />
+          <button id="addBtn" class="px-4 py-2 rounded bg-emerald-600 text-white">Tambah</button>
+        </div>
+        <div id="calendar" class="mt-4 space-y-2"></div>
+      </section>
+
+      <section class="mt-6 text-sm text-slate-600">
+        <h3 class="font-medium">Catatan penting</h3>
+        <ul class="list-disc list-inside">
+          <li>SiputTool adalah alat bantu <strong>legal</strong> dan <strong>etis</strong>. Tidak ada fitur auto-viewer atau manipulasi metrik.</li>
+          <li>Untuk publikasi otomatis atau analitik resmi, gunakan TikTok for Developers (OAuth & API resmi).</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="py-4 text-center text-sm text-slate-600">
+      © SiputTool — Dibuat untuk kreator. Buat laporan bug atau minta fitur ke repo GitHub.
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
