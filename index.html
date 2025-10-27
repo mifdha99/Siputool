@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Play TikTok dengan IP Rotation</title>
+    <title>AI Chat Bot - OpenAI</title>
     <style>
         * {
             margin: 0;
@@ -13,528 +13,598 @@
         }
         
         body {
-            background: linear-gradient(135deg, #010101, #2d2d2d);
-            color: #fff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
             min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            border-bottom: 1px solid #444;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #69c9d0, #ee1d52);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .subtitle {
-            color: #aaa;
-            font-size: 1.1rem;
-        }
-        
-        .main-content {
             display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-        }
-        
-        .video-section {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .video-container {
-            background: #000;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            margin-bottom: 20px;
-        }
-        
-        .video-placeholder {
-            width: 100%;
-            height: 600px;
-            background: #111;
-            display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            height: 85vh;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background: linear-gradient(90deg, #10a37f, #19c37d);
+            color: white;
+            padding: 20px;
+            text-align: center;
             position: relative;
         }
         
-        .video-player {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .video-info {
-            padding: 15px;
-            background: #1a1a1a;
-        }
-        
-        .video-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-        
-        .video-stats {
-            display: flex;
-            gap: 15px;
-            color: #aaa;
-            font-size: 0.9rem;
-        }
-        
-        .controls-section {
-            flex: 1;
-            min-width: 300px;
-            background: #1a1a1a;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-        
-        .control-group {
-            margin-bottom: 25px;
-        }
-        
-        h2 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #69c9d0;
-        }
-        
-        .input-group {
-            margin-bottom: 15px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #ddd;
-        }
-        
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #444;
-            background: #2d2d2d;
-            color: #fff;
-            font-size: 1rem;
-        }
-        
-        button {
-            background: linear-gradient(90deg, #69c9d0, #ee1d52);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: transform 0.2s, box-shadow 0.2s;
-            width: 100%;
-            margin-top: 10px;
-        }
-        
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(238, 29, 82, 0.4);
-        }
-        
-        .ip-display {
-            background: #2d2d2d;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border-left: 4px solid #69c9d0;
-        }
-        
-        .ip-address {
-            font-family: monospace;
-            font-size: 1.2rem;
-            color: #69c9d0;
-            margin: 10px 0;
-        }
-        
-        .status {
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-        
-        .status.connected {
-            background: rgba(105, 201, 208, 0.2);
-            color: #69c9d0;
-        }
-        
-        .status.rotating {
-            background: rgba(238, 29, 82, 0.2);
-            color: #ee1d52;
-        }
-        
-        .video-list {
-            margin-top: 20px;
-        }
-        
-        .video-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background: #2d2d2d;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        
-        .video-item:hover {
-            background: #3d3d3d;
-        }
-        
-        .video-thumb {
+        .bot-avatar {
             width: 60px;
             height: 60px;
-            border-radius: 8px;
-            background: #444;
-            margin-right: 15px;
-            flex-shrink: 0;
+            border-radius: 50%;
+            background: white;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #10a37f;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         
-        .video-desc {
-            flex: 1;
-        }
-        
-        .video-item-title {
-            font-size: 0.9rem;
+        .chat-header h1 {
+            font-size: 1.5rem;
             margin-bottom: 5px;
         }
         
-        .video-item-author {
-            font-size: 0.8rem;
-            color: #aaa;
+        .chat-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
         }
         
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
+        .api-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4cd964;
+        }
+        
+        .status-connecting {
+            background: #ffcc00;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #f8f9fa;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bot-message {
+            align-self: flex-start;
+            background: white;
+            border-bottom-left-radius: 5px;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            background: linear-gradient(90deg, #10a37f, #19c37d);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .bot-message .message-time {
+            text-align: left;
+        }
+        
+        .typing-indicator {
+            display: inline-block;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 18px;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #999;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+        .chat-input-container {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+            background: white;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            outline: none;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        .chat-input:focus {
+            border-color: #10a37f;
+        }
+        
+        .send-button {
+            background: linear-gradient(90deg, #10a37f, #19c37d);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .send-button:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+        
+        .send-button:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+        
+        .send-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .api-key-container {
+            padding: 15px 20px;
+            background: #fff3cd;
+            border-bottom: 1px solid #ffeaa7;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .api-key-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ffd43b;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: white;
+        }
+        
+        .save-key-btn {
+            padding: 8px 16px;
+            background: #10a37f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 20px;
+            border: 1px solid #f5c6cb;
+            font-size: 0.9rem;
+        }
+        
+        .model-selector {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            font-size: 0.9rem;
+        }
+        
+        .settings {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 0 20px 15px;
+            background: white;
+        }
+        
+        /* Responsif */
+        @media (max-width: 600px) {
+            .chat-container {
+                height: 90vh;
             }
             
-            .video-placeholder {
-                height: 400px;
+            .message {
+                max-width: 90%;
+            }
+            
+            .chat-header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .settings {
+                flex-direction: column;
+                align-items: stretch;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Auto Play TikTok dengan IP Rotation</h1>
-            <p class="subtitle">Putar video TikTok secara otomatis dengan rotasi alamat IP</p>
-        </header>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="bot-avatar">🤖</div>
+            <h1>AI Chat Bot - OpenAI</h1>
+            <p>Chatbot cerdas dengan teknologi OpenAI</p>
+            <div class="api-status">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="statusText">Menyiapkan API...</span>
+            </div>
+        </div>
         
-        <div class="main-content">
-            <section class="video-section">
-                <div class="video-container">
-                    <div class="video-placeholder">
-                        <video class="video-player" controls autoplay muted>
-                            <source src="" type="video/mp4">
-                            Browser Anda tidak mendukung pemutaran video.
-                        </video>
-                    </div>
-                    <div class="video-info">
-                        <h3 class="video-title" id="video-title">Pilih video untuk memulai</h3>
-                        <div class="video-stats">
-                            <span id="video-likes">0 suka</span>
-                            <span id="video-comments">0 komentar</span>
-                            <span id="video-shares">0 bagikan</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="video-list">
-                    <h2>Video Tersedia</h2>
-                    <div class="video-item" data-video="video1">
-                        <div class="video-thumb" style="background: linear-gradient(135deg, #ff6b6b, #ffa8a8);"></div>
-                        <div class="video-desc">
-                            <div class="video-item-title">Tutorial Dance Terbaru 2023</div>
-                            <div class="video-item-author">@dancemaster</div>
-                        </div>
-                    </div>
-                    <div class="video-item" data-video="video2">
-                        <div class="video-thumb" style="background: linear-gradient(135deg, #69c9d0, #a5dee5);"></div>
-                        <div class="video-desc">
-                            <div class="video-item-title">Life Hacks yang Berguna</div>
-                            <div class="video-item-author">@lifehacker</div>
-                        </div>
-                    </div>
-                    <div class="video-item" data-video="video3">
-                        <div class="video-thumb" style="background: linear-gradient(135deg, #ee1d52, #ff7ba0);"></div>
-                        <div class="video-desc">
-                            <div class="video-item-title">Komedi Singkat Lucu</div>
-                            <div class="video-item-author">@komedian_id</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="controls-section">
-                <div class="control-group">
-                    <h2>Pengaturan Auto Play</h2>
-                    <div class="input-group">
-                        <label for="interval">Interval Putar (detik)</label>
-                        <input type="number" id="interval" value="30" min="10">
-                    </div>
-                    <div class="input-group">
-                        <label for="video-count">Jumlah Video</label>
-                        <input type="number" id="video-count" value="10" min="1" max="50">
-                    </div>
-                    <button id="toggle-autoplay">Mulai Auto Play</button>
-                </div>
-                
-                <div class="control-group">
-                    <h2>Rotasi IP</h2>
-                    <div class="input-group">
-                        <label for="rotation-interval">Interval Rotasi (detik)</label>
-                        <input type="number" id="rotation-interval" value="60" min="30">
-                    </div>
-                    <div class="input-group">
-                        <label for="proxy-type">Tipe Proxy</label>
-                        <select id="proxy-type">
-                            <option value="residential">Residential</option>
-                            <option value="datacenter">Datacenter</option>
-                            <option value="mobile">Mobile</option>
-                        </select>
-                    </div>
-                    <button id="toggle-rotation">Mulai Rotasi IP</button>
-                    
-                    <div class="ip-display">
-                        <h3>IP Saat Ini</h3>
-                        <div class="ip-address" id="current-ip">192.168.1.1</div>
-                        <div>Lokasi: <span id="ip-location">Indonesia</span></div>
-                        <div>Provider: <span id="ip-provider">Telkom Indonesia</span></div>
-                    </div>
-                    
-                    <div class="status" id="rotation-status">Siap</div>
-                </div>
-                
-                <div class="control-group">
-                    <h2>Statistik</h2>
-                    <div class="input-group">
-                        <label>Video Diputar: <span id="played-count">0</span></label>
-                    </div>
-                    <div class="input-group">
-                        <label>IP Digunakan: <span id="ip-count">1</span></label>
-                    </div>
-                    <div class="input-group">
-                        <label>Waktu Berjalan: <span id="running-time">00:00:00</span></label>
-                    </div>
-                </div>
-            </section>
+        <div class="api-key-container">
+            <input type="password" class="api-key-input" id="apiKeyInput" placeholder="Masukkan API Key OpenAI Anda...">
+            <button class="save-key-btn" id="saveKeyBtn">Simpan Key</button>
+        </div>
+        
+        <div class="settings">
+            <select class="model-selector" id="modelSelector">
+                <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Cepat)</option>
+                <option value="gpt-4">GPT-4 (Lebih Cerdas)</option>
+            </select>
+            <div style="flex: 1;"></div>
+            <button class="save-key-btn" id="clearChatBtn">Hapus Chat</button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                👋 Halo! Saya adalah AI assistant yang didukung oleh OpenAI. 
+                Untuk memulai, silakan masukkan API Key OpenAI Anda di atas.
+                <div class="message-time" id="initTime">Baru saja</div>
+            </div>
+        </div>
+        
+        <div class="chat-input-container">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Ketik pesan di sini..." disabled>
+            <button class="send-button" id="sendButton" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
         </div>
     </div>
 
     <script>
-        // Data video TikTok (simulasi)
-        const videos = {
-            video1: {
-                title: "Tutorial Dance Terbaru 2023",
-                likes: "245K",
-                comments: "3.2K",
-                shares: "12K",
-                color: "linear-gradient(135deg, #ff6b6b, #ffa8a8)"
-            },
-            video2: {
-                title: "Life Hacks yang Berguna",
-                likes: "189K",
-                comments: "2.1K",
-                shares: "8.5K",
-                color: "linear-gradient(135deg, #69c9d0, #a5dee5)"
-            },
-            video3: {
-                title: "Komidi Singkat Lucu",
-                likes: "512K",
-                comments: "8.7K",
-                shares: "25K",
-                color: "linear-gradient(135deg, #ee1d52, #ff7ba0)"
-            }
-        };
-
-        // Data IP untuk rotasi (simulasi)
-        const ipAddresses = [
-            { ip: "103.21.244.12", location: "Jakarta, Indonesia", provider: "Telkom Indonesia" },
-            { ip: "45.64.123.89", location: "Surabaya, Indonesia", provider: "Indosat" },
-            { ip: "112.78.145.67", location: "Bandung, Indonesia", provider: "XL Axiata" },
-            { ip: "180.214.233.21", location: "Medan, Indonesia", provider: "Tri Indonesia" },
-            { ip: "125.160.102.34", location: "Semarang, Indonesia", provider: "Smartfren" },
-            { ip: "202.80.218.78", location: "Bali, Indonesia", provider: "Biznet" }
-        ];
+        // Konfigurasi
+        const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+        
+        // State aplikasi
+        let apiKey = localStorage.getItem('openai_api_key') || '';
+        let conversationHistory = [];
+        let isProcessing = false;
 
         // Elemen DOM
-        const videoPlayer = document.querySelector('.video-player');
-        const videoTitle = document.getElementById('video-title');
-        const videoLikes = document.getElementById('video-likes');
-        const videoComments = document.getElementById('video-comments');
-        const videoShares = document.getElementById('video-shares');
-        const currentIp = document.getElementById('current-ip');
-        const ipLocation = document.getElementById('ip-location');
-        const ipProvider = document.getElementById('ip-provider');
-        const rotationStatus = document.getElementById('rotation-status');
-        const toggleAutoplayBtn = document.getElementById('toggle-autoplay');
-        const toggleRotationBtn = document.getElementById('toggle-rotation');
-        const playedCount = document.getElementById('played-count');
-        const ipCount = document.getElementById('ip-count');
-        const runningTime = document.getElementById('running-time');
-        
-        // Variabel state
-        let isAutoPlaying = false;
-        let isRotating = false;
-        let autoPlayInterval;
-        let rotationInterval;
-        let currentVideoIndex = 0;
-        let currentIpIndex = 0;
-        let playedVideos = 0;
-        let usedIps = 1;
-        let startTime = new Date();
-        let timerInterval;
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const saveKeyBtn = document.getElementById('saveKeyBtn');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const modelSelector = document.getElementById('modelSelector');
+        const clearChatBtn = document.getElementById('clearChatBtn');
+        const initTime = document.getElementById('initTime');
 
-        // Event listener untuk item video
-        document.querySelectorAll('.video-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const videoId = this.getAttribute('data-video');
-                playVideo(videoId);
+        // Inisialisasi waktu
+        initTime.textContent = new Date().toLocaleTimeString('id-ID', { 
+            hour: '2-digit', minute: '2-digit' 
+        });
+
+        // Fungsi untuk update status API
+        function updateApiStatus(status, message) {
+            statusDot.className = 'status-dot';
+            if (status === 'connected') {
+                statusDot.style.background = '#4cd964';
+                statusText.textContent = 'API Terhubung';
+            } else if (status === 'connecting') {
+                statusDot.classList.add('status-connecting');
+                statusText.textContent = message || 'Menghubungkan...';
+            } else if (status === 'error') {
+                statusDot.style.background = '#ff3b30';
+                statusText.textContent = message || 'Error API';
+            } else {
+                statusDot.style.background = '#ffcc00';
+                statusText.textContent = message || 'Menunggu API Key';
+            }
+        }
+
+        // Fungsi untuk validasi API Key
+        function validateApiKey(key) {
+            return key && key.startsWith('sk-') && key.length > 20;
+        }
+
+        // Fungsi untuk menyimpan API Key
+        function saveApiKey() {
+            const key = apiKeyInput.value.trim();
+            if (validateApiKey(key)) {
+                apiKey = key;
+                localStorage.setItem('openai_api_key', key);
+                apiKeyInput.type = 'password';
+                enableChat();
+                updateApiStatus('connected');
+                showBotMessage('API Key berhasil disimpan! Sekarang Anda bisa mulai chatting dengan AI. 😊');
+            } else {
+                alert('API Key tidak valid. Pastikan format API Key OpenAI Anda benar (dimulai dengan sk-).');
+            }
+        }
+
+        // Fungsi untuk mengaktifkan chat
+        function enableChat() {
+            chatInput.disabled = false;
+            sendButton.disabled = false;
+            chatInput.placeholder = 'Ketik pesan di sini...';
+        }
+
+        // Fungsi untuk menonaktifkan chat
+        function disableChat() {
+            chatInput.disabled = true;
+            sendButton.disabled = true;
+            chatInput.placeholder = 'Masukkan API Key terlebih dahulu...';
+        }
+
+        // Fungsi untuk mendapatkan waktu sekarang
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString('id-ID', { 
+                hour: '2-digit', minute: '2-digit' 
             });
+        }
+
+        // Fungsi untuk menambahkan pesan ke chat
+        function addMessage(message, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            
+            messageDiv.innerHTML = `
+                ${message}
+                <div class="message-time">${getCurrentTime()}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Fungsi untuk menampilkan pesan bot
+        function showBotMessage(message) {
+            addMessage(message, false);
+        }
+
+        // Fungsi untuk menampilkan pesan user
+        function showUserMessage(message) {
+            addMessage(message, true);
+        }
+
+        // Fungsi untuk menampilkan typing indicator
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot-message typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            
+            typingDiv.innerHTML = `
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Fungsi untuk menghapus typing indicator
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Fungsi untuk mengirim pesan ke OpenAI API
+        async function sendMessageToOpenAI(message) {
+            if (!validateApiKey(apiKey)) {
+                throw new Error('API Key tidak valid');
+            }
+
+            // Tambahkan pesan user ke history
+            conversationHistory.push({ role: 'user', content: message });
+
+            const response = await fetch(OPENAI_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: modelSelector.value,
+                    messages: [
+                        {
+                            role: 'system',
+                            content: 'Anda adalah asisten AI yang membantu dan ramah. Berikan respons yang informatif dan engaging. Gunakan bahasa Indonesia yang natural dan mudah dipahami.'
+                        },
+                        ...conversationHistory
+                    ],
+                    max_tokens: 1000,
+                    temperature: 0.7
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error?.message || 'Terjadi kesalahan pada API');
+            }
+
+            const data = await response.json();
+            const botResponse = data.choices[0].message.content;
+
+            // Tambahkan respons bot ke history
+            conversationHistory.push({ role: 'assistant', content: botResponse });
+
+            return botResponse;
+        }
+
+        // Fungsi untuk memproses pesan pengguna
+        async function processUserMessage() {
+            const message = chatInput.value.trim();
+            if (message === '' || isProcessing) return;
+
+            isProcessing = true;
+            chatInput.value = '';
+            sendButton.disabled = true;
+
+            // Tampilkan pesan user
+            showUserMessage(message);
+
+            // Tampilkan typing indicator
+            showTypingIndicator();
+
+            try {
+                updateApiStatus('connecting', 'Mengirim pesan...');
+                const response = await sendMessageToOpenAI(message);
+                removeTypingIndicator();
+                showBotMessage(response);
+                updateApiStatus('connected');
+            } catch (error) {
+                removeTypingIndicator();
+                console.error('Error:', error);
+                
+                // Tampilkan pesan error
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = `Error: ${error.message}`;
+                chatMessages.appendChild(errorDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                updateApiStatus('error', error.message);
+            } finally {
+                isProcessing = false;
+                sendButton.disabled = false;
+                chatInput.focus();
+            }
+        }
+
+        // Fungsi untuk menghapus chat
+        function clearChat() {
+            if (confirm('Apakah Anda yakin ingin menghapus semua percakapan?')) {
+                chatMessages.innerHTML = `
+                    <div class="message bot-message">
+                        👋 Halo! Percakapan telah direset. Silakan mulai percakapan baru.
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                conversationHistory = [];
+            }
+        }
+
+        // Event Listeners
+        sendButton.addEventListener('click', processUserMessage);
+        
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                processUserMessage();
+            }
         });
 
-        // Fungsi untuk memutar video
-        function playVideo(videoId) {
-            const video = videos[videoId];
-            if (video) {
-                videoTitle.textContent = video.title;
-                videoLikes.textContent = video.likes + " suka";
-                videoComments.textContent = video.comments + " komentar";
-                videoShares.textContent = video.shares + " bagikan";
-                
-                // Simulasi perubahan warna untuk video yang berbeda
-                document.querySelector('.video-placeholder').style.background = video.color;
-                
-                // Di aplikasi nyata, di sini akan ada kode untuk memuat video TikTok
-                // Untuk demo, kita hanya akan menampilkan placeholder
-                videoPlayer.src = "";
-                
-                // Update statistik
-                playedVideos++;
-                playedCount.textContent = playedVideos;
-            }
-        }
+        saveKeyBtn.addEventListener('click', saveApiKey);
+        
+        clearChatBtn.addEventListener('click', clearChat);
 
-        // Fungsi untuk memutar video berikutnya
-        function playNextVideo() {
-            const videoIds = Object.keys(videos);
-            currentVideoIndex = (currentVideoIndex + 1) % videoIds.length;
-            playVideo(videoIds[currentVideoIndex]);
-        }
-
-        // Fungsi untuk merotasi IP
-        function rotateIP() {
-            currentIpIndex = (currentIpIndex + 1) % ipAddresses.length;
-            const ipData = ipAddresses[currentIpIndex];
-            
-            currentIp.textContent = ipData.ip;
-            ipLocation.textContent = ipData.location;
-            ipProvider.textContent = ipData.provider;
-            
-            // Update statistik
-            usedIps++;
-            ipCount.textContent = usedIps;
-            
-            // Tampilkan status rotasi
-            rotationStatus.textContent = "IP Dirotasi";
-            rotationStatus.className = "status rotating";
-            
-            // Kembalikan status setelah 2 detik
-            setTimeout(() => {
-                rotationStatus.textContent = "Terhubung";
-                rotationStatus.className = "status connected";
-            }, 2000);
-        }
-
-        // Fungsi untuk memperbarui waktu berjalan
-        function updateRunningTime() {
-            const now = new Date();
-            const diff = now - startTime;
-            
-            const hours = Math.floor(diff / 3600000);
-            const minutes = Math.floor((diff % 3600000) / 60000);
-            const seconds = Math.floor((diff % 60000) / 1000);
-            
-            runningTime.textContent = 
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        // Event listener untuk tombol auto play
-        toggleAutoplayBtn.addEventListener('click', function() {
-            if (!isAutoPlaying) {
-                // Mulai auto play
-                const interval = parseInt(document.getElementById('interval').value) * 1000;
-                autoPlayInterval = setInterval(playNextVideo, interval);
-                toggleAutoplayBtn.textContent = "Hentikan Auto Play";
-                isAutoPlaying = true;
-                
-                // Mulai timer jika belum berjalan
-                if (!timerInterval) {
-                    timerInterval = setInterval(updateRunningTime, 1000);
-                }
-                
-                // Putar video pertama jika belum ada yang diputar
-                if (playedVideos === 0) {
-                    playNextVideo();
-                }
-            } else {
-                // Hentikan auto play
-                clearInterval(autoPlayInterval);
-                toggleAutoplayBtn.textContent = "Mulai Auto Play";
-                isAutoPlaying = false;
-            }
-        });
-
-        // Event listener untuk tombol rotasi IP
-        toggleRotationBtn.addEventListener('click', function() {
-            if (!isRotating) {
-                // Mulai rotasi IP
-                const interval = parseInt(document.getElementById('rotation-interval').value) * 1000;
-                rotationInterval = setInterval(rotateIP, interval);
-                toggleRotationBtn.textContent = "Hentikan Rotasi IP";
-                isRotating = true;
-                
-                // Rotasi IP pertama kali
-                rotateIP();
-            } else {
-                // Hentikan rotasi IP
-                clearInterval(rotationInterval);
-                toggleRotationBtn.textContent = "Mulai Rotasi IP";
-                isRotating = false;
-            }
+        // Toggle visibility API Key
+        apiKeyInput.addEventListener('dblclick', () => {
+            apiKeyInput.type = apiKeyInput.type === 'password' ? 'text' : 'password';
         });
 
         // Inisialisasi
-        playVideo('video1');
-        updateRunningTime();
+        function init() {
+            if (apiKey) {
+                apiKeyInput.value = '••••••••••••••••••••••';
+                enableChat();
+                updateApiStatus('connected');
+                showBotMessage('Selamat datang kembali! API Key sudah tersimpan. Silakan mulai chatting. 😊');
+            } else {
+                disableChat();
+                updateApiStatus('waiting', 'Masukkan API Key');
+            }
+        }
+
+        // Jalankan inisialisasi
+        init();
     </script>
 </body>
-  </html>
+</html>
